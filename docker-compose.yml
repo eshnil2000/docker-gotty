@@ -20,10 +20,15 @@ services:
     - "./app:/app"
     - "./files/home:/root"
     - /var/run/docker.sock:/var/run/docker.sock
+    #echo $(htpasswd -nb dappsuni dappsuni) | sed -e s/\\$/\\$\\$/g
+    #dappsuni:$$apr1$$j59gopUU$$6raYPbR3cIdYNM.oQ1Eaz1
     labels:
       - traefik.http.routers.gotty.rule=Host(`gotty.localhost`)
       - traefik.http.routers.gotty.service=gotty
       - traefik.http.services.gotty.loadbalancer.server.port=8080
       - traefik.docker.network=traefik_default
+      - traefik.http.routers.gotty.middlewares=test-auth
+      - "traefik.http.middlewares.test-auth.basicauth.users=dappsuni:$$apr1$$j59gopUU$$6raYPbR3cIdYNM.oQ1Eaz1"
+
     networks:
         traefik_default:
