@@ -14,3 +14,13 @@ Usage
 
 [1]: https://gotty.herokuapp.com
 # docker-gotty docker in docker
+
+Usage with traefik
+### start up traefik container, ex:
+### https://github.com/eshnil2000/traefik-docker-browser-letsencrypt/blob/master/localhost/docker-compose.yml
+-------
+```
+docker network create -d overlay --attachable traefik_default
+docker build -t docker-gotty .
+docker stack deploy -c docker-compose.yml gotty
+```
