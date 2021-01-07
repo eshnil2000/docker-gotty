@@ -1,0 +1,29 @@
+#docker network create -d overlay --attachable traefik_default
+#docker build -t docker-gotty .
+#docker stack deploy -c docker-compose.yml gotty
+version: '3'
+networks:
+  traefik_default:
+    driver: overlay
+    external:
+      name:  traefik_default
+    
+services:
+  
+  gotty:
+    hostname: gotty
+    #build: .
+    image: docker-gotty
+    #ports: 
+    #  - "8080:8080"
+    volumes:
+    - "./app:/app"
+    - "./files/home:/root"
+    - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.http.routers.gotty.rule=Host(`gotty.localhost`)
+      - traefik.http.routers.gotty.service=gotty
+      - traefik.http.services.gotty.loadbalancer.server.port=8080
+      - traefik.docker.network=traefik_default
+    networks:
+        traefik_default:
