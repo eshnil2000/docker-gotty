@@ -41,6 +41,7 @@ EXPOSE 8080
 COPY files/home/* /root/
 COPY app $WORKDIR
 
+RUN git clone https://github.com/eshnil2000/traefik-docker-browser-letsencrypt.git /app/workshop
 ENTRYPOINT ["sh", "-c"]
 CMD ["service docker start && gotty -w docker run -v /var/run/docker.sock:/var/run/docker.sock -it --rm docker-gotty /bin/bash"]
 #CMD ["gotty --permit-write --reconnect bash"]
